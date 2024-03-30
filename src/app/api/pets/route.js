@@ -11,10 +11,20 @@ export async function GET() {
     await dbConnect();
     const pets = await Pet.find();
 
-    console.log(JSON.stringify(pets));
+    //console.log(JSON.stringify(pets));
+
+    if (!pets) {
+      return NextResponse({
+        message: "List the Pets not found",
+        status: 404,
+      });
+    }
     return NextResponse.json(pets);
   } catch (error) {
-    throw error.message;
+    console.log(error.message);
+    return NextResponse.json(error.message, {
+      status: 400,
+    });
   }
 }
 
@@ -34,6 +44,9 @@ export const POST = async (req, res) => {
       return NextResponse.json("Error in the created Schema Pet");
     }
   } catch (error) {
-    throw error.message;
+    console.log(error.message);
+    return NextResponse.json(error.message, {
+      status: 400,
+    });
   }
 };

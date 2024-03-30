@@ -1,115 +1,79 @@
 import { NextResponse, NextRequest } from "next/server";
-
-export function GET(request, { params }) {
-  try {
-    console.log(params.id);
-    /*   const taskFound = await Task.findById(params.id);
-
-    if (!taskFound)*/
-    // return NextResponse.json(`pest by id ${params.id}`);
-    return NextResponse.json(`obteniendo  pets x id: ${params.id} `);
-  } catch (error) {
-    return NextResponse.json(error.message, {
-      status: 400,
-    });
-  }
-}
-
-export function PUT(request, { params }) {
-  return NextResponse.json(`update by id  ${params.id}`);
-}
-export function DELETE(request, { params }) {
-  const id = params.id;
-  //console.log(req.params.id);
-  return NextResponse.json(`DELETE by id  ${id}`);
-}
-
-/* export const DELETE = (req, { params }, res) => {
-  return NextResponse.json(`Deleting by id ${params}`);
-};
-export const PUT = (req, { params }, res) => {
-  return NextResponse.json(`updateing by id ${params}`);
-};
- */
-
-/* 
-
-import Task from "@/models/Task";
-import { dbConnect } from "@/utils/mongoose";
-import { NextResponse } from "next/server";
+import mongoose from "mongoose";
+import dbConnect from "@/utils/cnn";
+import Pet from "@/models/Pet";
 
 export async function GET(request, { params }) {
-  dbConnect();
   try {
-    const taskFound = await Task.findById(params.id);
+    await dbConnect();
 
-    if (!taskFound)
-      return NextResponse.json(
-        {
-          message: "Task not found",
-        },
-        {
-          status: 404,
-        }
-      );
+    //TODO: mongodb espera un BbjectId
+    const id = new mongoose.Types.ObjectId(params.id);
+    const PetFound = await Pet.findById(id);
 
-    return NextResponse.json(taskFound);
+    //console.log(PetFound);
+    if (!PetFound) {
+      return NextResponse.json(`Pet by id ${params.id} NOT Found`);
+    }
+    return NextResponse.json(PetFound);
   } catch (error) {
-    return NextResponse.json(error.message, {
-      status: 400,
-    });
+    console.log(error.message);
+    return NextResponse.json({ error: error.message });
   }
 }
 
 export async function PUT(request, { params }) {
-  const body = await request.json();
   dbConnect();
+  let id = new mongoose.Types.ObjectId(params.id);
+  let body = await request.json();
 
+  // console.log(id, body);
   try {
-    const taskUpdated = await Task.findByIdAndUpdate(params.id, body, {
+    const PetUpdated = await Pet.findByIdAndUpdate(id, body, {
+      //devuelve el nuevo objeto actualizado
       new: true,
     });
 
-    if (!taskUpdated)
+    console.log(PetUpdated);
+    if (!PetUpdated)
       return NextResponse.json(
         {
-          message: "Task not found",
+          message: "Pet not found",
         },
         {
           status: 404,
         }
       );
 
-    return NextResponse.json(taskUpdated);
+    return NextResponse.json(PetUpdated);
   } catch (error) {
+    // throw error.message;
+    console.log(error.message);
     return NextResponse.json(error.message, {
       status: 400,
     });
   }
 }
-
 export async function DELETE(request, { params }) {
   dbConnect();
+  let id = new mongoose.Types.ObjectId(params.id);
+  // let body = await request.json();
 
   try {
-    const taskDeleted = await Task.findByIdAndDelete(params.id);
+    const PetDeleted = await Pet.findByIdAndDelete(id);
 
-    if (!taskDeleted)
-      return NextResponse.json(
-        {
-          message: "Task not found",
-        },
-        {
-          status: 404,
-        }
-      );
-
-    return NextResponse.json(taskDeleted);
+    console.log(PetDeleted);
+    if (!PetDeleted) {
+      return NextResponse.json({
+        message: "Pet NOT delete",
+        status: 400,
+      });
+    }
+    return NextResponse.json(PetDeleted);
   } catch (error) {
+    console.log(error.message);
     return NextResponse.json(error.message, {
       status: 400,
     });
   }
 }
-
-*/

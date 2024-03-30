@@ -17,6 +17,7 @@ const PetSchema = new Schema(
       type: Number,
       min: [0, "la edad minima es 0"],
       max: [20, "La edad máxima permitida es de 20 años"],
+      required: true,
     },
 
     description: {
