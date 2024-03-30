@@ -19,7 +19,10 @@ const PetSchema = new Schema(
       max: [20, "La edad máxima permitida es de 20 años"],
       required: true,
     },
-
+    type_animal: {
+      type: String,
+      required: [true, "debe ingresar el tipo de animal"],
+    },
     description: {
       type: String,
       required: [true, " El description es obligatorio"],
