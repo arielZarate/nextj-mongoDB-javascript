@@ -2,7 +2,7 @@ import React from "react";
 
 function Card({ pet }) {
   return (
-    <div className="">
+    <div>
       <h2 className="">
         Nombre de mascota:
         <span className=" mx-3 font-bold text-orange-800 text-2xl">
@@ -23,7 +23,8 @@ function Card({ pet }) {
         <span className="mx-3 font-bold text-blue-500">{` ${pet.peso} kg`}</span>{" "}
       </p>
       <p>
-        color: <span className="mx-3 font-bold text-lime-500"> {pet.peso}</span>
+        color:{" "}
+        <span className="mx-3 font-bold text-lime-500"> {pet.color}</span>
       </p>
 
       <p>

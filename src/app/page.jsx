@@ -91,7 +91,7 @@ export default function Home() {
 
   return (
     <>
-      <h1 className="font-bold text-green-700 px-4 my-5 py-2">
+      <h1 className="font-bold text-green-700 px-4 mt-5 py-2 mb-24 bg-slate-100">
         crud nextjs include api of next/server with mongoDB-compass and react
         with taildwind css
       </h1>
@@ -119,7 +119,7 @@ export default function Home() {
             key={pet._id}
           >
             {/* link del edit */}
-            <Link href="/pet/edit">
+            <Link href={`/pet/${pet._id}`}>
               <div className="flex justify-end">
                 <MdEdit size={35} color="#158b25" />
               </div>
