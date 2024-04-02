@@ -15,6 +15,8 @@ function Form() {
   const params = useParams();
   const router = useRouter();
 
+  //TODO: falta los validators de los inputs
+  //==================
   useEffect(() => {
     if (params.id) {
       //si existe el params que busque por ese params
