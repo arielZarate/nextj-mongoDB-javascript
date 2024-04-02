@@ -86,7 +86,19 @@ cuando se ejecuta el `http://localhost:3000` se inicia la web y se muestra la li
 - pueden hacer click en alguna mascota y lo llevara a un Form
 - En el Formualrio pueden crear , editar o eliminar la misma mascota
 
-![imagen frontal del proyecto](public/Img/imagemd.png)
+![imagen frontal del proyecto](public/Img/imagen1.png)
+
+#
+
+#
+
+![imagen frontal del proyecto](public/Img/imagen2.png)
+
+#
+
+#
+
+![imagen frontal del proyecto](public/Img/imagen3.png)
 
 ## Dependencias
 
