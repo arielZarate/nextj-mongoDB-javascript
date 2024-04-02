@@ -37,113 +37,35 @@ export default function Home() {
     fetchData();
   }, []);
 
-  //========handlers==========
-
-  const handlerDelete = async (id) => {
-    /* const op = window.confirm("desea eliminar este elemento ??!!");
-
-    if (op) {
-      alert("vamos a eliminar con una funcion");
-
-      const res = fetch(`http://localhost:3000/api/pets/${id}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      console.log(res);
-      console.log(res.json());
-       if (res) {
-        throw new Error("Network response was not ok");
-      }
-
-      // Si la eliminación es exitosa, actualiza la lista de mascotas
-      const updatedPets = pets.filter((pet) => pet._id !== id);
-      setPets(updatedPets);
-      alert("Elemento eliminado correctamente"); 
-    }*/
-
-    const op = window.confirm("¿Desea eliminar este elemento?");
-
-    if (op) {
-      try {
-        const res = await fetch(`http://localhost:3000/api/pets/${id}`, {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-
-        if (!res.ok) {
-          throw new Error("Network response was not ok");
-        }
-
-        // Si la eliminación es exitosa, actualiza la lista de mascotas en la lista
-        const updatedPets = pets.filter((pet) => pet._id !== id);
-        setPets(updatedPets);
-        alert("Elemento eliminado correctamente");
-      } catch (error) {
-        console.error("Error al eliminar el elemento:", error.message);
-      }
-    }
-  };
-
   return (
-    <>
+    <div className="container mx-auto">
       <h1 className="font-bold text-green-700 px-4 mt-5 py-2 mb-24 bg-slate-100">
         crud nextjs include api of next/server with mongoDB-compass and react
         with taildwind css
       </h1>
 
-      <div className="flex row justify-between">
-        <h1 className="font-bold text-slate-700  bg-amber-500 p-3 rounded-sm">
-          List Pets
-        </h1>
+      <Link href="/pet/form" className="flex justify-end ">
+        <button className=" font-bold  w-80 bg-slate-800 text-cyan-500 rounded-lg p-3">
+          Agregar Mascota
+        </button>
+      </Link>
 
-        <Link href="/pet/form">
-          <button className="font-bold text-cyan-800 bg-slate-200 rounded-lg p-3">
-            add Pet
-          </button>
-        </Link>
-      </div>
+      <h1 className="font-bold   text-4xl text-center text-black bg-yellow-500  p-3 rounded-sm m-4 ">
+        Lista de Mascotas
+      </h1>
 
       {loading ? (
-        <div className="flex justify-center font-bold text-2xl text-red-800">
-          cargando ...
+        <div className="flex justify-center font-bold text-3xl text-gray-500 ">
+          Cargando espere...
         </div>
       ) : (
-        pets?.map((pet) => (
-          <div
-            className="bg-slate-700  rounded-e-md  p-3 my-4 gap-4"
-            key={pet._id}
-          >
-            {/* link del edit */}
-            <Link href={`/pet/${pet._id}`}>
-              <div className="flex justify-end">
-                <MdEdit size={35} color="#158b25" />
-              </div>
-            </Link>
-
-            {/* ============================ */}
-            <Card pet={pet} />
-            {/* ====================== */}
-
-            {/* div del delete  */}
-            <div className="flex justify-end">
-              <button
-                type="button"
-                onClick={() => {
-                  handlerDelete(pet._id);
-                }}
-              >
-                <MdDelete size={35} color="#9c2727" />
-              </button>
-            </div>
-            {/* ==========fin div delete========== */}
-          </div>
-        ))
+        //el div debe envolver a todo para que quede como grid, NO DENTRO del map
+        <div className="grid sm:grid-cols-1  md:grid-cols-2  lg:grid-cols-3 gap-3  my-3 mx-auto">
+          {pets?.map((pet) => (
+            <Card pet={pet} key={pet._id} />
+          ))}
+        </div>
       )}
-    </>
+    </div>
   );
 }

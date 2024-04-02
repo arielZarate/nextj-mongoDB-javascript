@@ -1,47 +1,46 @@
 import React from "react";
-
+import Link from "next/link";
 function Card({ pet }) {
   return (
-    <div>
-      <h2 className="">
-        Nombre de mascota:
-        <span className=" mx-3 font-bold text-orange-800 text-2xl">
-          {pet.name}
-        </span>
-      </h2>
-      <h5>
-        identificador:
-        <span className=" mx-3font-bold   text-green-500">{pet._id}</span>
-      </h5>
+    <Link href={`/pet/${pet._id}`}>
+      <div className="bg-gray-800 py-3  px-5 rounded-lg hover:bg-gray-700 hover:cursor-pointer ">
+        <h2 className="">
+          Nombre de mascota:
+          <span className=" mx-2 font-bold text-gray-300 py-2">{pet.name}</span>
+        </h2>
+        <h5>
+          id:
+          <span className=" mx-3  text-green-400 py-2">{pet._id}</span>
+        </h5>
 
-      <h5>
-        tipo de animal:
-        <span className="mx-3 font bold text-amber-500">{pet.type_animal}</span>
-      </h5>
-      <p>
-        peso:
-        <span className="mx-3 font-bold text-blue-500">{` ${pet.peso} kg`}</span>{" "}
-      </p>
-      <p>
-        color:{" "}
-        <span className="mx-3 font-bold text-lime-500"> {pet.color}</span>
-      </p>
+        <h5>
+          tipo de animal:
+          <span className="mx-3  text-gray-400 py-2">{pet.type_animal}</span>
+        </h5>
+        <p>
+          peso:
+          <span className="mx-3  text-gray-400 py-2">{` ${pet.peso} kg`}</span>{" "}
+        </p>
+        <p>
+          color: <span className="mx-3  text-gray-400 py-2"> {pet.color}</span>
+        </p>
 
-      <p>
-        {pet.age === undefined ? (
-          <span className="font-bold text-cyan-500">
-            {" "}
-            edad mascota :No data
-          </span>
-        ) : (
-          <span className="font-bold text-pink-500">edad: {pet.age} años</span>
-        )}
-      </p>
-      <p>
-        descripcion:{" "}
-        <span className="font-bold text-indigo-500">{pet.description}</span>
-      </p>
-    </div>
+        <p className="">
+          {pet.age === undefined ? (
+            <span className="  text-gray-400 py-2">edad mascota :No data</span>
+          ) : (
+            <p className=" ">
+              Edad:
+              <span className=" mx-2 text-gray-400 py-2">{`${pet.age} años`}</span>{" "}
+            </p>
+          )}
+        </p>
+        <p>
+          descripcion:
+          <span className="mx-2  text-gray-400 py-2">{pet.description}</span>
+        </p>
+      </div>
+    </Link>
   );
 }
 
