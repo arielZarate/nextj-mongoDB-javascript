@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { updatePet, createPet, getPetByID } from "@/formActions/Actions";
+import { updatePet, createPet, handlerDelete } from "@/formActions/Actions";
 
 //TODO: SE PUEDE HACER ASI EL FORM O USAR REACT-HOOK-FORM O VER SI EXISTE
 //ALGUNA LIBREARIA DE NEXTJS
@@ -69,6 +69,9 @@ function Form() {
     } else if (form.age.length > 2) {
       errors.age = "La edad  debe tener máximo 2 digitos";
       isValid = false;
+    } else if (form.age > 20) {
+      errors.age = "La edad  maxima es de 20 años";
+      isValid = false;
     }
 
     //====================
@@ -125,38 +128,6 @@ function Form() {
 
   //========handlers==========
 
-  const handlerDelete = async (id) => {
-    const op = window.confirm("¿Desea eliminar este elemento?");
-
-    if (op) {
-      try {
-        const res = await fetch(`http://localhost:3000/api/pets/${id}`, {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-
-        if (!res.ok) {
-          throw new Error("Network response was not ok");
-        }
-
-        // Si la eliminación es exitosa, actualiza la lista de mascotas en la lista
-        //esto sirve si no hay bd y todo pasa en memoria pero como teng bd refresco la pagina
-        //const updatedPets = pets.filter((pet) => pet._id !== id);
-        //setPets(updatedPets);
-        alert("Elemento eliminado correctamente");
-
-        setTimeout(() => {
-          router.push("/");
-          router.refresh();
-        }, 1200);
-      } catch (error) {
-        console.error("Error al eliminar el elemento:", error.message);
-      }
-    }
-  };
-
   //===================================================================
   const handlerSubmit = async (e) => {
     e.preventDefault();
@@ -197,13 +168,16 @@ function Form() {
             {params.id ? "Actualizar Mascota" : "Crear Mascota"}
           </h1>
 
-          <button
-            type="button"
-            className="bg-red-700 text-white borde-1 rounded-md p-2 hover:cursor-pointer hover:bg-red-500 "
-            onClick={() => handlerDelete(params.id)}
-          >
-            Eliminar Mascota
-          </button>
+          {/* Renderizar el botón de eliminar solo si params.id existe */}
+          {params.id && (
+            <button
+              type="button"
+              className="bg-red-700 text-white borde-1 rounded-md p-2 hover:cursor-pointer hover:bg-red-500 "
+              onClick={() => handlerDelete(params.id, router)}
+            >
+              Eliminar Mascota
+            </button>
+          )}
         </div>
 
         <input

@@ -1,6 +1,7 @@
 //===================METODOS ====================================================
 
 //================create===================
+import { showNotification, showConfirmation } from "@/utils/Notifications";
 
 export const createPet = async (form, router) => {
   try {
@@ -11,7 +12,7 @@ export const createPet = async (form, router) => {
       },
       body: JSON.stringify(form),
     });
-    alert("dato creado");
+    showNotification("success", "Mascota creada con exito", 3000, "top-end");
     setTimeout(() => {
       router.push("/");
       router.refresh();
@@ -23,28 +24,60 @@ export const createPet = async (form, router) => {
 
 //=================================================================
 
-//==========getPetByID=================
-
-export const getPetByID = async (id) => {
+export const handlerDelete = async (id, router) => {
   try {
-    let res = await fetch(`http://localhost:3000/api/pets/${id}`);
-    const data = await res.json();
-    // console.log(data);
-    setForm({
-      name: data.name,
-      color: data.color,
-      peso: data.peso,
-      age: data.age,
-      type_animal: data.type_animal,
-      description: data.description,
-    });
+    //const op = window.confirm("¿Desea eliminar este elemento?");
+    const op = await showConfirmation(
+      "¿Desea eliminar este elemento Mascota?",
+      "Estas seguro que desea Eliminar??"
+    );
 
-    //return data;
+    if (op) {
+      const res = await fetch(`http://localhost:3000/api/pets/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!res.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      // Si la eliminación es exitosa, actualiza la lista de mascotas en la lista
+      //esto sirve si no hay bd y todo pasa en memoria pero como teng bd refresco la pagina
+      //const updatedPets = pets.filter((pet) => pet._id !== id);
+      //setPets(updatedPets);
+      // alert("Elemento eliminado correctamente");
+
+      showNotification(
+        "info",
+        "Elemento mascota Eliminado ",
+        2000,
+        "bottom-start"
+      );
+
+      setTimeout(() => {
+        router.push("/");
+        router.refresh();
+      }, 1200);
+    } else {
+      // El usuario canceló la notificación
+      // console.log("El usuario canceló la notificación");
+      showNotification("info", "Se cancelo la operacion", 1300, "bottom-start");
+    }
   } catch (error) {
-    console.log(error.message);
+    console.error("Error al eliminar el elemento:", error.message);
+    showNotification(
+      "error",
+      "Error al eliminar el elemento",
+      1300,
+      "bottom-start"
+    );
   }
 };
 
+//========================================
 //==============updated====================
 
 export const updatePet = async (id, form, router) => {
@@ -57,7 +90,7 @@ export const updatePet = async (id, form, router) => {
       body: JSON.stringify(form),
     });
 
-    window.alert("datos actualizados... ");
+    showNotification("info", "Mascota actualizada", 3000, "bottom-end");
     setTimeout(() => {
       router.push("/");
       router.refresh();
